@@ -4,7 +4,7 @@
 
     <style>
       @font-face {
-        font-family: "Noto Sans 2";
+        font-family: "noto-sans-base";
         src:  url("NotoSans-Regular.otf") format("opentype"),
               url("NotoSans-Regular.ttf") format("truetype");
         font-display: swap;
@@ -13,7 +13,7 @@
         font-weight: normal;
       }
       @font-face {
-        font-family: "Noto Sans 2";
+        font-family: "noto-sans-base";
         src:  url("NotoSans-Bold.otf") format("opentype"),
               url("NotoSans-Bold.ttf") format("truetype");
         font-display: swap;
@@ -23,7 +23,36 @@
       }
 
       @font-face {
-        font-family: "DejaVu Sans 2";
+        font-family: "noto-sans-reg";
+        src:  url("NotoSans-Regular.otf") format("opentype"),
+              url("NotoSans-Regular.ttf") format("truetype");
+        font-display: swap;
+        font-stretch: normal;
+        font-style: normal;
+        font-weight: normal;
+      }
+
+      @font-face {
+        font-family: "noto-sans-bold";
+        src:  url("NotoSans-Regular.otf") format("opentype"),
+              url("NotoSans-Regular.ttf") format("truetype");
+        font-display: swap;
+        font-stretch: normal;
+        font-style: normal;
+        font-weight: normal;
+      }
+      @font-face {
+        font-family: "noto-sans-bold";
+        src:  url("NotoSans-Bold.otf") format("opentype"),
+              url("NotoSans-Bold.ttf") format("truetype");
+        font-display: swap;
+        font-stretch: normal;
+        font-style: normal;
+        font-weight: bold;
+      }
+
+      @font-face {
+        font-family: "deja-vu-sans-diacritics";
         src:  url("DejaVuSans.ttf") format("truetype");
         font-display: swap;
         font-stretch: normal;
@@ -31,7 +60,7 @@
         font-weight: normal;
       }
       @font-face {
-        font-family: "DejaVu Sans 2";
+        font-family: "deja-vu-sans-diacritics";
         src:  url("DejaVuSans-Bold.ttf") format("truetype");
         font-display: swap;
         font-stretch: normal;
@@ -40,7 +69,7 @@
       }
 
       @font-face {
-        font-family: "FreeSans 2";
+        font-family: "freesans-diacritics";
         src:  url("FreeSans.woff") format("woff");
         font-display: swap;
         font-stretch: normal;
@@ -48,7 +77,7 @@
         font-weight: normal;
       }
       @font-face {
-        font-family: "FreeSans 2";
+        font-family: "freesans-diacritics";
         src:  url("FreeSansBold.woff") format("woff");
         font-display: swap;
         font-stretch: normal;
@@ -56,230 +85,175 @@
         font-weight: bold;
       }
 
-      span.text-guide {
+      :root, html, body {
+        font-family: "noto-sans-base";
+      }
+
+      .text-guide {
         color: hsla(0deg, 100%, 50%, 1);
         color: hwb(0deg 0% 0% / 100%);
       }
-      span.text-guide.diacritical-mark {
+
+      .noto-regular {
+        color: red;
+        font-family: "noto-sans-reg";
+      }
+
+      .noto-bold {
+        color: orange;
+        font-family: "noto-sans-bold";
         font-weight: bold;
       }
-      span.text-guide.diacritical-mark.deja-font {
+
+      .deja-vu-sans-diacritics {
         color: blue;
-        font-family: "DejaVu Sans 2";
+        font-family: "deja-vu-sans-diacritics";
       }
 
-      ul > li:nth-of-type(1),
-      ul > li:nth-of-type(2),
-      ul > li:nth-of-type(3) {
-        font-family: "Noto Sans 2";
-      }
-      ul > li:nth-of-type(4),
-      ul > li:nth-of-type(5) {
-        font-family: "DejaVu Sans 2";
-      }
-      ul > li:nth-of-type(6),
-      ul > li:nth-of-type(7),
-      ul > li:nth-of-type(8) {
-        font-family: "FreeSans 2";
+      .freesans-diacritics {
+        color: green;
+        font-family: "freesans-diacritics";
       }
 
-      ul > li:nth-of-type(1)::after,
+      ul > li:nth-of-type(1)::after {
+        content: " (NS)";
+      }
       ul > li:nth-of-type(2)::after {
-        content: " (Noto Sans)";
+        content: " (NS regular marks)";
       }
       ul > li:nth-of-type(3)::after {
-        content: " (Noto Sans with Deja Diacriticals)";
+        content: " (NS bold)";
       }
-      ul > li:nth-of-type(4)::after,
+      ul > li:nth-of-type(4)::after {
+        content: " (NS with regular DV marks)";
+      }
       ul > li:nth-of-type(5)::after {
-        content: " (DejaVu Sans)";
+        content: " (NS with regular FS marks)";
       }
-      ul > li:nth-of-type(6)::after,
-      ul > li:nth-of-type(7)::after {
-        content: " (FreeSans)";
-      }
-      ul > li:nth-of-type(8)::after {
-        content: " (FreeSans with Deja Diacriticals)";
+
+      ul.nocontentafter > li::after {
+        content: "";
       }
     </style>
   </head>
 
   <body>
     <h3>Guide</h3>
-    <p>DejaVu Sans and FreeSans were included for comparison.</p>
-
-    <p>The non-coloured sample is how it looks like regularly.</p>
+    <ul class="nocontentafter">
+      <li>No color: Noto Sans as-is</li>
+      <li><span style="color: red;">red</span>: Noto Sans regular marks</li>
+      <li><span style="color: orange;"><b>orange</b></span>: Noto Sans bold marks</li>
+      <li><span style="color: blue;">blue</span>: Deja Vu Sans regular marks</li>
+      <li><span style="color: green;">green</span>: FreeSans regular marks</li>
+    </ul>
 
     <h3>grave</h3>
     <ul>
       <li>batà</li>
-      <li>bata<span class="text-guide diacritical-mark">̀</span></li>
-      <li>bata<span class="text-guide diacritical-mark deja-font">̀</span></li>
-      <li>batà</li>
-      <li>bata<span class="text-guide diacritical-mark">̀</span></li>
-      <li>batà</li>
-      <li>bata<span class="text-guide diacritical-mark">̀</span></li>
-      <li>bata<span class="text-guide diacritical-mark deja-font">̀</span></li>
+      <li>bata<span class="noto-regular">̀</span></li>
+      <li>bata<span class="noto-bold">̀</span></li>
+      <li>bata<span class="deja-vu-sans-diacritics">̀</span></li>
+      <li>bata<span class="freesans-diacritics">̀</span></li>
     </ul>
-
-    <p>note #1 (red): moves slightly to the left</p>
 
     <h3>circumflex</h3>
     <ul>
       <li>panibughô</li>
-      <li>panibugho<span class="text-guide diacritical-mark">̂</span></li>
-      <li>panibugho<span class="text-guide diacritical-mark deja-font">̂</span></li>
-      <li>panibughô</li>
-      <li>panibugho<span class="text-guide diacritical-mark">̂</span></li>
-      <li>panibughô</li>
-      <li>panibugho<span class="text-guide diacritical-mark">̂</span></li>
-      <li>panibugho<span class="text-guide diacritical-mark deja-font">̂</span></li>
+      <li>panibugho<span class="noto-regular">̂</span></li>
+      <li>panibugho<span class="noto-bold">̂</span></li>
+      <li>panibugho<span class="deja-vu-sans-diacritics">̂</span></li>
+      <li>panibugho<span class="freesans-diacritics">̂</span></li>
     </ul>
-
-    <p>note #1 (red): moves far to the right</p>
 
     <h3>acute</h3>
     <ul>
       <li>aráw–áraw</li>
-      <li>ara<span class="text-guide diacritical-mark">́</span>w–a<span class="text-guide diacritical-mark">́</span>raw</li>
-      <li>ara<span class="text-guide diacritical-mark deja-font">́</span>w–a<span class="text-guide diacritical-mark deja-font">́</span>raw</li>
-      <li>aráw–áraw</li>
-      <li>ara<span class="text-guide diacritical-mark">́</span>w–a<span class="text-guide diacritical-mark">́</span>raw</li>
-      <li>aráw–áraw</li>
-      <li>ara<span class="text-guide diacritical-mark">́</span>w–a<span class="text-guide diacritical-mark">́</span>raw</li>
-      <li>ara<span class="text-guide diacritical-mark deja-font">́</span>w–a<span class="text-guide diacritical-mark deja-font">́</span>raw</li>
+      <li>ara<span class="noto-regular">́</span>w–a<span class="noto-regular">́</span>raw</li>
+      <li>ara<span class="noto-bold">́</span>w–a<span class="noto-bold">́</span>raw</li>
+      <li>ara<span class="deja-vu-sans-diacritics">́</span>w–a<span class="deja-vu-sans-diacritics">́</span>raw</li>
+      <li>ara<span class="freesans-diacritics">́</span>w–a<span class="freesans-diacritics">́</span>raw</li>
     </ul>
-
-    <p>note #1 (red): moves slightly to the right</p>
 
     <h3>dieresis</h3>
     <ul>
       <li>këtkët</li>
-      <li>ke<span class="text-guide diacritical-mark">̈</span>tke<span class="text-guide diacritical-mark">̈</span>t</li>
-      <li>ke<span class="text-guide diacritical-mark deja-font">̈</span>tke<span class="text-guide diacritical-mark deja-font">̈</span>t</li>
-      <li>këtkët</li>
-      <li>ke<span class="text-guide diacritical-mark">̈</span>tke<span class="text-guide diacritical-mark">̈</span>t</li>
-      <li>këtkët</li>
-      <li>ke<span class="text-guide diacritical-mark">̈</span>tke<span class="text-guide diacritical-mark">̈</span>t</li>
-      <li>ke<span class="text-guide diacritical-mark deja-font">̈</span>tke<span class="text-guide diacritical-mark deja-font">̈</span>t</li>
+      <li>ke<span class="noto-regular">̈</span>tke<span class="noto-regular">̈</span>t</li>
+      <li>ke<span class="noto-bold">̈</span>tke<span class="noto-bold">̈</span>t</li>
+      <li>ke<span class="deja-vu-sans-diacritics">̈</span>tke<span class="deja-vu-sans-diacritics">̈</span>t</li>
+      <li>ke<span class="freesans-diacriticss">̈</span>tke<span class="freesans-diacritics">̈</span>t</li>
     </ul>
-
-    <p>note #1 (red): moves far to the right</p>
 
     <h3>tildə</h3>
     <ul>
       <li>sag̃nay; sagñay</li>
-      <li>sag<span class="text-guide diacritical-mark">̃</span>nay; sagn<span class="text-guide diacritical-mark">̃</span>ay</li>
-      <li>sag<span class="text-guide diacritical-mark deja-font">̃</span>nay; sagn<span class="text-guide diacritical-mark deja-font">̃</span>ay</li>
-      <li>sag̃nay; sagñay</li>
-      <li>sag<span class="text-guide diacritical-mark">̃</span>nay; sagn<span class="text-guide diacritical-mark">̃</span>ay</li>
-      <li>sag̃nay; sagñay</li>
-      <li>sag<span class="text-guide diacritical-mark">̃</span>nay; sagn<span class="text-guide diacritical-mark">̃</span>ay</li>
-      <li>sag<span class="text-guide diacritical-mark deja-font">̃</span>nay; sagn<span class="text-guide diacritical-mark deja-font">̃</span>ay</li>
+      <li>sag<span class="noto-regular">̃</span>nay; sagn<span class="noto-regular">̃</span>ay</li>
+      <li>sag<span class="noto-bold">̃</span>nay; sagn<span class="noto-bold">̃</span>ay</li>
+      <li>sag<span class="deja-vu-sans-diacritics">̃</span>nay; sagn<span class="deja-vu-sans-diacritics">̃</span>ay</li>
+      <li>sag<span class="freesans-diacritics">̃</span>nay; sagn<span class="freesans-diacritics">̃</span>ay</li>
     </ul>
-
-    <p>regular and bold samples are perfectly matched</p>
 
     <h3>double tildə</h3>
     <ul>
       <li>san͠ga</li>
-      <li>san<span class="text-guide diacritical-mark">͠</span>ga</li>
-      <li>san<span class="text-guide diacritical-mark deja-font">͠</span>ga</li>
-      <li>san͠ga</li>
-      <li>san<span class="text-guide diacritical-mark">͠</span>ga</li>
-      <li>san͠ga</li>
-      <li>san<span class="text-guide diacritical-mark">͠</span>ga</li>
-      <li>san<span class="text-guide diacritical-mark deja-font">͠</span>ga</li>
+      <li>san<span class="noto-regular">͠</span>ga</li>
+      <li>san<span class="noto-bold">͠</span>ga</li>
+      <li>san<span class="deja-vu-sans-diacritics">͠</span>ga</li>
+      <li>san<span class="freesans-diacritics">͠</span>ga</li>
     </ul>
-
-    <p>regular and bold samples are perfectly matched</p>
 
     <h3>macron</h3>
     <ul>
       <li>āso</li>
-      <li>a<span class="text-guide diacritical-mark">̄</span>so</li>
-      <li>a<span class="text-guide diacritical-mark deja-font">̄</span>so</li>
-      <li>āso</li>
-      <li>a<span class="text-guide diacritical-mark">̄</span>so</li>
-      <li>āso</li>
-      <li>a<span class="text-guide diacritical-mark">̄</span>so</li>
-      <li>a<span class="text-guide diacritical-mark deja-font">̄</span>so</li>
+      <li>a<span class="noto-regular">̄</span>so</li>
+      <li>a<span class="noto-bold">̄</span>so</li>
+      <li>a<span class="deja-vu-sans-diacritics">̄</span>so</li>
+      <li>a<span class="freesans-diacritics">̄</span>so</li>
     </ul>
-
-    <p>note #1 (red): moves far to the right</p>
 
     <h3>double macron (example #1)</h3>
     <ul>
       <li>h͞oy</li>
-      <li>h<span class="text-guide diacritical-mark">͞</span>oy</li>
-      <li>h<span class="text-guide diacritical-mark deja-font">͞</span>oy</li>
-      <li>h͞oy</li>
-      <li>h<span class="text-guide diacritical-mark">͞</span>oy</li>
-      <li>h͞oy</li>
-      <li>h<span class="text-guide diacritical-mark">͞</span>oy</li>
-      <li>h<span class="text-guide diacritical-mark deja-font">͞</span>oy</li>
+      <li>h<span class="noto-regular">͞</span>oy</li>
+      <li>h<span class="noto-bold">͞</span>oy</li>
+      <li>h<span class="deja-vu-sans-diacritics">͞</span>oy</li>
+      <li>h<span class="freesans-diacritics">͞</span>oy</li>
     </ul>
-
-    <p>note #1 (regular): only as wide as a single character</p>
-    <p>note #2 (red): moves to the right</p>
 
     <h3>double macron (example #2)</h3>
     <ul>
       <li>n͞ay</li>
-      <li>n<span class="text-guide diacritical-mark">͞</span>ay</li>
-      <li>n<span class="text-guide diacritical-mark deja-font">͞</span>ay</li>
-      <li>n͞ay</li>
-      <li>n<span class="text-guide diacritical-mark">͞</span>ay</li>
-      <li>n͞ay</li>
-      <li>n<span class="text-guide diacritical-mark">͞</span>ay</li>
-      <li>n<span class="text-guide diacritical-mark deja-font">͞</span>ay</li>
+      <li>n<span class="noto-regular">͞</span>ay</li>
+      <li>n<span class="noto-bold">͞</span>ay</li>
+      <li>n<span class="deja-vu-sans-diacritics">͞</span>ay</li>
+      <li>n<span class="freesans-diacritics">͞</span>ay</li>
     </ul>
-
-    <p>note #1 (regular): width is short and not centered</p>
-    <p>note #2 (red): moves a bit to the right</p>
 
     <h3>macron below</h3>
     <ul>
       <li>traba̱ho</li>
-      <li>traba<span class="text-guide diacritical-mark">̱</span>ho</li>
-      <li>traba<span class="text-guide diacritical-mark deja-font">̱</span>ho</li>
-      <li>traba̱ho</li>
-      <li>traba<span class="text-guide diacritical-mark">̱</span>ho</li>
-      <li>traba̱ho</li>
-      <li>traba<span class="text-guide diacritical-mark">̱</span>ho</li>
-      <li>traba<span class="text-guide diacritical-mark deja-font">̱</span>ho</li>
+      <li>traba<span class="noto-regular">̱</span>ho</li>
+      <li>traba<span class="noto-bold">̱</span>ho</li>
+      <li>traba<span class="deja-vu-sans-diacritics">̱</span>ho</li>
+      <li>traba<span class="freesans-diacritics">̱</span>ho</li>
     </ul>
-
-    <p>note #1 (red): moves far to the right</p>
 
     <h3>double macron below (example #1)</h3>
     <ul>
       <li>trab͟aho</li>
-      <li>trab<span class="text-guide diacritical-mark">͟</span>aho</li>
-      <li>trab<span class="text-guide diacritical-mark deja-font">͟</span>aho</li>
-      <li>trab͟aho</li>
-      <li>trab<span class="text-guide diacritical-mark">͟</span>aho</li>
-      <li>trab͟aho</li>
-      <li>trab<span class="text-guide diacritical-mark">͟</span>aho</li>
-      <li>trab<span class="text-guide diacritical-mark deja-font">͟</span>aho</li>
+      <li>trab<span class="noto-regular">͟</span>aho</li>
+      <li>trab<span class="noto-bold">͟</span>aho</li>
+      <li>trab<span class="deja-vu-sans-diacritics">͟</span>aho</li>
+      <li>trab<span class="freesans-diacritics">͟</span>aho</li>
     </ul>
-
-    <p>note #1 (regular): not centered; can be made longer</p>
-    <p>note #2 (red): slightly moves to the right</p>
 
     <h3>double macron below (example #2)</h3>
     <ul>
       <li>trap͟o</li>
-      <li>trap<span class="text-guide diacritical-mark">͟</span>o</li>
-      <li>trap<span class="text-guide diacritical-mark deja-font">͟</span>o</li>
-      <li>trap͟o</li>
-      <li>trap<span class="text-guide diacritical-mark">͟</span>o</li>
-      <li>trap͟o</li>
-      <li>trap<span class="text-guide diacritical-mark">͟</span>o</li>
-      <li>trap<span class="text-guide diacritical-mark deja-font">͟</span>o</li>
+      <li>trap<span class="noto-regular">͟</span>o</li>
+      <li>trap<span class="noto-bold">͟</span>o</li>
+      <li>trap<span class="deja-vu-sans-diacritics">͟</span>o</li>
+      <li>trap<span class="freesans-diacritics">͟</span>o</li>
     </ul>
 
-    <p>note #1 (regular): only as wide as a single character</p>
-    <p>note #2 (red): moves to the right</p>
   </body>
 </html>
