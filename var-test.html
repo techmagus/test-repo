@@ -1,0 +1,104 @@
+<html>
+  <head>
+    <title>CSS var() test page</title>
+
+    <style>
+      @font-face {
+        font-family: "dejavu-sans-test-one";
+        src: url("DejaVuSans.ttf") format("truetype");
+      }
+      @font-face {
+        font-family: "freesans-test-one";
+        src: url("FreeSans.woff") format("woff");
+      }
+      @font-face {
+        font-family: "noto-sans-test-one";
+        src: url("NotoSans-Regular.otf") format("opentype");
+      }
+
+      :root {
+        --red: red;
+        --green: green;
+        --blue: blue;
+        --dejavusans: "dejavu-sans-test-one";
+        --freesans: "freesans-test-one";
+        --notosans: "noto-sans-test-one";
+      }
+      :root, html, body {
+        font-family: "Noto Sans";
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>var() font test</h2>
+    <ul>
+      <li style="font-family: var(--dejavusans);">var(--dejavusans) <span style="color: var(--green); font-weight: bold;">= works (DejaVu)</span></li>
+      <li style="font-family: var(--freesans);">var(--freesans) <span style="color: var(--green); font-weight: bold;">= works (Free Sans)</span></li>
+      <li style="font-family: var(--notosans);">var(--notosans) <span style="color: var(--green); font-weight: bold;">= works (Noto)</span></li>
+      <li style="font-family: var(--notosans), 'freesans-test-one';">var(--notosans), 'freesans-test-one' <span style="color: var(--green); font-weight: bold;">= works (Noto)</span></li>
+      <li style="font-family: var(--notosans2), 'freesans-test-one';">var(--notosans2), 'freesans-test-one' <span style="color: var(--red); font-weight: bold;">= fails</span>, nothing outside of var()</li>
+      <li style="font-family: var(--notosans, 'freesans-test-one');">var(--notosans, 'freesans-test-one') <span style="color: var(--green); font-weight: bold;">= works (Noto)</span></li>
+      <li style="font-family: var(--notosans2, 'freesans-test-one');">var(--notosans2, 'freesans-test-one') <span style="color: var(--green); font-weight: bold;">= works (Free Sans)</span></li>
+      <li style="font-family: var(--notosans, 'freesans-test-one', 'dejavu-sans-test-one');">var(--notosans, 'freesans-test-one', 'dejavu-sans-test-one') <span style="color: var(--green); font-weight: bold;">= works (Noto)</span></li>
+      <li style="font-family: var(--notosans2, 'freesans-test-one', 'dejavu-sans-test-one');">var(--notosans2, 'freesans-test-one', 'dejavu-sans-test-one') <span style="color: var(--green); font-weight: bold;">= works (Free Sans)</span></li>
+      <li style="font-family: var(--notosans2, 'freesans-test-two', 'dejavu-sans-test-one');">var(--notosans2, 'freesans-test-two', 'dejavu-sans-test-one')
+        <ul>
+          <li>Firefox: <span style="color: var(--red); font-weight: bold;">= fails</span>, should be 2nd fallback</li>
+          <li>Chromium (Edge, Whale): <span style="color: var(--green); font-weight: bold;">= works (DejaVu)</span></li>
+        </ul>
+      </li>
+      <li style="font-family: var(--notosans2, var(--freesans), 'dejavu-sans-test-one');">var(--notosans2, var(--freesans), 'dejavu-sans-test-one') <span style="color: var(--green); font-weight: bold;">= works (Free Sans)</span>, because 1st fallback is valid</li>
+      <li style="font-family: var(--notosans2, var(--freesans2), 'dejavu-sans-test-one');">var(--notosans2, var(--freesans2), 'dejavu-sans-test-one') <span style="color: var(--red); font-weight: bold;">= fails</span>, nothing outside of var()</li>
+      <li style="font-family: var(--notosans2, var(--freesans2), 'dejavu-sans-test-one');">var(--notosans2, 'dejavu-sans-test-one', var(--freesans)) <span style="color: var(--red); font-weight: bold;">= fails</span>, nothing outside of var()</li>
+      <li style="font-family: var(--notosans2, 'dejavu-sans-test-one', var(--freesans2));">var(--notosans2, 'dejavu-sans-test-one', var(--freesans2)) <span style="color: var(--red); font-weight: bold;">= fails</span>, nothing outside of var()</li>
+      <li style="font-family: var(--notosans2, 'dejavu-sans-test-two', var(--freesans));">var(--notosans2, 'dejavu-sans-test-two', var(--freesans))
+        <ul>
+          <li>Firefox: <span style="color: var(--red); font-weight: bold;">= fails</span>, nothing outside of var()</li>
+          <li>Chromium (Edge, Whale): <span style="color: var(--green); font-weight: bold;">= works (Free Sans)</span></li>
+        </ul>
+      </li>
+      <li style="font-family: var(--notosans, var(--dejavusans));">var(--notosans, var(--dejavusans)) <span style="color: var(--green); font-weight: bold;">= works (Noto)</span></li>
+      <li style="font-family: var(--notosans2, var(--dejavusans));">var(--notosans2, var(--dejavusans)) <span style="color: var(--green); font-weight: bold;">= works (DejaVu)</span></li>
+      <li style="font-family: var(--notosans2, var(--dejavusans, 'freesans-test-one'));">var(--notosans2, var(--dejavusans, 'freesans-test-one')) <span style="color: var(--green); font-weight: bold;">= works (DejaVu)</span></li>
+      <li style="font-family: var(--notosans2, var(--dejavusans2, 'freesans-test-one'));">var(--notosans2, var(--dejavusans2, 'freesans-test-one')) <span style="color: var(--green); font-weight: bold;">= works (Free Sans)</span></li>
+      <li style="font-family: var(--notosans2, var(--dejavusans2, 'freesans-test-one', 'noto-sans-test-one';));">var(--notosans2, var(--dejavusans2, 'freesans-test-one', 'notosans-test-one')) <span style="color: var(--red); font-weight: bold;">= fails</span>, should be 1st fallback of 2nd var()</li>
+    </ul>
+
+    <h2>var() Color test </h2>
+    <ul>
+      <li style="color: var(--red);">var(--red)</li>
+      <li style="color: var(--green);">var(--green)</li>
+      <li style="color: var(--blue);">var(--blue)</li>
+      <li style="color: var(--red), green;">var(--red), green</li>
+      <li style="color: var(--red2), green;">var(--red2), green</li>
+      <li style="color: var(--red, green);">var(--red, green)</li>
+      <li style="color: var(--red2, green);">var(--red2, green)</li>
+      <li style="color: var(--red, green, blue);">var(--red, green, blue)</li>
+      <li style="color: var(--red2, green, blue);">var(--red2, green, blue) - should be green, as per W3C</li>
+      <li style="color: var(--red, var(--green));">var(--red, var(--green))</li>
+      <li style="color: var(--red2, var(--green));">var(--red2, var(--green))</li>
+      <li style="color: var(--red, var(--green, blue));">var(--red, var(--green, blue))</li>
+      <li style="color: var(--red2, var(--green, blue));">var(--red2, var(--green, blue))</li>
+      <li style="color: var(--red, var(--green, blue, orange));">var(--red, var(--green, blue, orange))</li>
+      <li style="color: var(--red2, var(--green, blue, orange));">var(--red2, var(--green, blue, orange))</li>
+      <li style="color: var(--red2, var(--green2, blue));">var(--red2, var(--green2, blue))</li>
+      <li style="color: var(--red2, var(--green2, blue, orange));">var(--red2, var(--green2, blue, orange)) - should be blue, as per W3C</li>
+    </ul>
+
+    <h3>Interesting differences</h3>
+    <p>This format works differently when used in font and color properties:</p>
+
+    <ul>
+      <li style="font-family: var(--notosans2, 'freesans-test-one', 'dejavu-sans-test-one');">var(--notosans2, 'freesans-test-one', 'dejavu-sans-test-one') <span style="color: var(--green); font-weight: bold;">= works (Free Sans)</span></li>
+      <li style="color: var(--red2, green, blue);">var(--red2, green, blue) - should be green, as per W3C</li>
+    </ul>
+
+    <h2>Tested on (as of 2023-02-22)</h2>
+    <ul>
+      <li>Mozilla Firefox 111.0b3</li>
+      <li>Microsoft Edge 111.0.1652.0</li>
+      <li>Naver Whale 3.19.166.16</li>
+    </ul>
+  </body>
+</html>
