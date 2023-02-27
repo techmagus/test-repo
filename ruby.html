@@ -1,0 +1,694 @@
+<!DOCTYPE html lang="en-PH">
+  <head>
+    <title>RUBY test</title>
+
+    <style>
+      /* BGN: FONT and @FONT-FACE */
+        @font-face {
+          font-family: "noto-mono";
+          src: url("NotoSansMono-Regular.ttf") format("truetype");
+          font-weight: normal;
+        }
+        @font-face {
+          font-family: "noto-mono";
+          src: url("NotoSansMono-Bold.ttf") format("truetype");
+          font-weight: bold;
+        }
+        :root {
+          font-family: "noto-mono", "Noto Sans Mono", "Noto Mono", monospace;
+          font-size: x-large;
+        }
+        :lang(en),
+        :lang(fIl), :lang(phi) {
+          font-family: "noto-mono", "Noto Sans Mono", "Noto Mono", monospace;
+        }
+        :lang(zh), :lang(zh-Hant) {
+          font-family: "noto-mono", "Noto Sans Mono", "Noto Mono", "Noto Sans CJK TC", "Noto Sans TC";
+        }
+        :lang(zh-Hans) {
+          font-family: "noto-mono", "Noto Sans Mono", "Noto Mono", "Noto Sans CJK SC", "Noto Sans SC";
+        }
+        :lang(ja) {
+          font-family: "noto-mono", "Noto Sans Mono", "Noto Mono", "Noto Sans CJK JP", "Noto Sans JP";
+        }
+        :lang(ko) {
+          font-family: "noto-mono", "Noto Sans Mono", "Noto Mono", "Noto Sans CJK KR", "Noto Sans KR";
+        }
+        :lang(fil-Tglg), :lang(phi-Tglg) {
+          font-family: "noto-mono", "Noto Sans Mono", "Noto Mono", "Noto Sans Tagalog", "Noto Sans Hanunoo", "Noto Sans Buhid", "Noto Sans Tagbanwa";
+        }
+        code:not(.\9) {
+          color: red;
+          font-family: "noto-mono", "Noto Sans Mono", "Noto Mono", monospace;
+        }
+      /* END: FONT and @FONT-FACE */
+
+      /* BGN: RUBY */
+        ruby {
+          display: ruby;
+          ruby-merge: separate;
+          ruby-overhang: auto;
+        }
+        rbc { /* In W3C Working Draft but not in major browsers. */
+          display: ruby-base-container;
+        }
+        rb, /* Highly recommended by the W3C, but the HTML5 WG marked this as deprecated (this MUST be corrected). */
+        span.ruby-base {
+          display: ruby-base;
+          white-space: nowrap;
+        }
+        rtc { /* Very useful for multilingual Asian websites, but the HTML5 WG marked this as deprecated (this MUST be corrected). */
+          display: ruby-text-container;
+        }
+        rp { /* For fallback parentheses only. */
+          display: none;
+        }
+        rt,
+        span.ruby-text { /* Annotation */
+          display: ruby-text;
+        }
+
+        ruby,
+        rbc, rb, span.ruby-base
+        rtc, span.ruby-text-container,
+        rt, span.ruby-text {
+          unicode-bidi: -webkit-isolate;
+          unicode-bidi: -moz-isolate;
+          unicode-bidi: isolate;
+        }
+        rtc, span.ruby-text-container,
+        rt, span.ruby-text {
+          font-variant-east-asian: ruby;
+          line-height: 1;
+          text-align: center; /* Webkit and Blink/Chromium-based browsers are keeping us in the Dark Ages, like IE used to be, for not supporting ruby-align. */
+          ruby-align: center; /* better presentation */
+          -webkit-text-emphasis: none;
+                  text-emphasis: none;
+          text-transform: full-size-kana;
+          white-space: nowrap;
+        }
+        /* suggested by W3C
+        rtc,
+        :not(rtc) > rt,
+        :not(rtc) > span.ruby-text {
+          font-size: 67%;
+        }
+        rtc:lang(zh-TW),
+        :not(rtc) > rt:lang(zh-TW),
+        :not(rtc) > span.ruby-text:lang(zh-TW),
+        rtc:lang(zh-Hanb),
+        :not(rtc) > rt:lang(zh-Hanb),
+        :not(rtc) > span.ruby-text:lang(zh-Hanb) {
+          font-size: 30%;
+        }
+        */
+        rt rt,
+        span.ruby-text span.ruby-text {
+          font-size: 0.9em;
+        }
+
+        /* Let's add some colours, because we can! */
+        /* Works for Tabular and Interleaved models. */
+        /* RUBY BASE */
+        /*
+        span.ruby-base,
+        rb {
+          color: purple;
+        }
+        */
+        /* RUBY OVER */
+          ruby > ruby > rt,
+          ruby > ruby > rt > ruby > span.ruby-base,
+          ruby > ruby > rt > ruby > rb,
+          ruby > span.ruby-text-container:nth-of-type(odd) > rt,
+          ruby > span.ruby-text-container:nth-of-type(odd) > rt > ruby > rb,
+          ruby > rtc:nth-of-type(odd) > rt,
+          ruby > rtc:nth-of-type(odd) > rt > ruby > rb
+          {
+            color: green
+          }
+        /* RUBY BELOW */
+          ruby > rt,
+          ruby > rt > ruby > span.ruby-base,
+          ruby > rt > ruby > rb,
+          ruby > span.ruby-text-container:nth-of-type(even) > rt,
+          ruby > span.ruby-text-container:nth-of-type(even) > rt > ruby > rb,
+          ruby > rtc:nth-of-type(even) > rt,
+          ruby > rtc:nth-of-type(even) > rt > ruby > rb
+          {
+            /* RUBY BELOW */
+            color: blue;
+          }
+        /* RUBY OVER OVER and RUBY BELOW BELOW */
+        ruby > rt > ruby > rt,
+        ruby > span.ruby-text-container:nth-of-type(odd) > rt > ruby > rt,
+        ruby > span.ruby-text-container:nth-of-type(even) > rt > ruby > rt,
+        ruby > rtc:nth-of-type(odd) > rt > ruby > rt,
+        ruby > rtc:nth-of-type(even) > rt > ruby > rt
+        {
+          color: red;
+        }
+
+        /* applies in <ruby> */
+        .ruby-alternate { /* initial value */
+          ruby-position: alternate;
+        }
+        .ruby-over { /* default setting in major browsers */
+          ruby-position: over;
+        }
+        .ruby-under {
+          ruby-position: under;
+        }
+        .ruby-intercharacter {
+          ruby-position: inter-character;
+        }
+
+        /* applies in <rbc>, <rb>, <rtc>, and <rt> */
+        .ruby-spacearound { /* initial value, declared in case we need override */
+          ruby-align: space-around;
+        }
+        .ruby-center { /* our default for better presentation */
+          ruby-align: center;
+        }
+        .ruby-spacebetween {
+          ruby-align: space-between;
+        }
+        .ruby-start {
+          ruby-align: start;
+        }
+
+        .ruby-guide {
+          border: 1px dotted;
+        }
+      /* END: RUBY */
+
+      /* BGN: note counter */
+        .note {
+          display: list-item;
+          list-style-position: inside;
+          font-size: smaller;
+        }
+        .note::marker {
+          content: "Note：";
+        }
+        :lang(zh) .note::marker,
+        .note:lang(zh)::marker {
+          content: "註解：";
+        }
+        :lang(zh-Hans) .note::marker,
+        .note:lang(zh-Hans)::marker {
+          content: "注释：";
+        }
+        :lang(ja) .note::marker,
+        .note:lang(ja)::marker {
+          content: "注解：";
+        }
+        :lang(ko) .note::marker,
+        .note:lang(ko)::marker {
+          content: "주해：";
+        }
+        /* See: https://www.w3.org/TR/css-counter-styles-3/ */
+        /* See: https://www.w3.org/TR/predefined-counter-styles/ */
+        .notecounter {
+          display: list-item;
+          counter-increment: note-counter;
+          list-style-position: inside;
+          font-size: smaller;
+        }
+        .notecounter::marker {
+          content: "Note（" counter(note-counter) "）：";
+        }
+        :lang(zh) .notecounter::marker,
+        .notecounter:lang(zh)::marker {
+          content: "註解（" counter(note-counter, trad-chinese-informal) "）：";
+        }
+        :lang(zh-Hans) .notecounter::marker,
+        .notecounter:lang(zh-Hans)::marker {
+          content: "注释（" counter(note-counter, simp-chinese-informal) "）：";
+        }
+        :lang(ja) .notecounter::marker,
+        .notecounter:lang(ja)::marker {
+          content: "注解（" counter(note-counter, japanese-informal) "）：";
+        }
+        :lang(ko) .notecounter::marker,
+        .notecounter:lang(ko)::marker {
+          content: "주해（" counter(note-counter, korean-hangul-formal) "）：";
+        }
+      /* END: note counter */
+
+      /* BGN: flex */
+        .flexit {
+          align-content: flex-start;
+          align-items: flex-start;
+          display: flex;
+          justify-content: flex-start;
+          overflow: auto;
+          width: fit-content;
+        }
+
+        .flexit div {
+          background-color:wheat;
+          height: 100%;
+          margin: 5px;
+          width: 100%;
+        }
+      /* END: flex */
+    </style>
+  </head>
+
+  <body>
+
+    <h3>How it looks like</h3>
+    <section class="flexit">
+      <div>
+        <h4>Tabular model with <code>rb</code><br/>+ <code>rtc</code></h4>
+        <p style="border: 1px solid; width: fit-content;">
+          <ruby translate="no">
+            <rb class="ruby-guide">ruby-rb-01</rb> <rb class="ruby-guide">ruby-rb-02</rb>
+            <rtc><rp>(</rp><rt><ruby class="ruby-guide"><rb>rrb-01</rb><rt>rrb-01-A</rt></ruby> annotation</rt><rt>rrb-02 <ruby class="ruby-guide"><rb>annotation</rb><rt>anno-anno</rt></ruby></rt><rp>)</rp></rtc>
+            <rtc><rp>(</rp><rt><ruby class="ruby-under ruby-guide"><rb>rrb-01</rb><rt>rrb-01-A</rt></ruby> annotation</rt><rt>rrb-02 <ruby class="ruby-under ruby-guide"><rb>annotation</rb><rt>anno-anno</rt></ruby></rt><rp>)</rp></rtc>
+          </ruby>
+        </p>
+        <p><b>HIGHLY RECOMMENDED!</b></p>
+        <p>This is the cleanest, easiest, and most perfect markup.</p>
+      </div>
+      <div>
+        <h4>Tabular model with <code>rb</code><br/>+ <code>span</code> instead of <code>rtc</code></h4>
+        <p style="border: 1px solid; width: fit-content;">
+          <ruby translate="no">
+            <rb class="ruby-guide">ruby-rb-01</rb> <rb class="ruby-guide">ruby-rb-02</rb>
+            <span class="ruby-text-container"><rp>(</rp><rt><ruby class="ruby-guide"><rb>rrb-01</rb><rt>rrb-01-A</rt></ruby> annotation</rt><rt>rrb-02 <ruby class="ruby-guide"><rb>annotation</rb><rt>anno-anno</rt></ruby></rt><rp>)</rp></span>
+            <span class="ruby-text-container"><rp>(</rp><rt class="ruby-under"><ruby class="ruby-under ruby-guide"><rb>rrb-01</rb><rt>rrb-01-A</rt></ruby> annotation</rt><rt>rrb-02 <ruby class="ruby-under ruby-guide"><rb>annotation</rb><rt>anno-anno</rt></ruby></rt><rp>)</rp></span>
+          </ruby>
+        </p>
+        <p><b>NOT RECOMMENDED.</b></p>
+        <p>Random issues related to <code>span</code>. Also, <code>rtc</code> is a semantic element, <b>use</b> it.</p>
+      </div>
+    </section>
+
+    <section class="flexit">
+      <div>
+        <h4>Interleaved<br/>with <code>rb</code></h4>
+        <p style="border: 1px solid; width: max-content;">
+          <ruby class="ruby-under" translate="no">
+            <!-- 1ST RUBY -->
+            <ruby class="ruby-over">
+              <rb class="ruby-guide">ruby-rb-01</rb><!-- RUBY OVER --><rp>(</rp><rt><ruby><rb class="ruby-guide">rrb-01</rb><rp>(</rp><rt>rrb-01-A</rt><rp>)</rp></ruby> annotation</rt><rp>)</rp>
+            </ruby><!-- RUBY UNDER --><rp>(</rp><rt><ruby><rb class="ruby-guide">rrb-01</rb><rp>(</rp><rt>rrb-01-A</rt><rp>)</rp></ruby> annotation</rt><rp>)</rp>
+
+            <!-- 2ND RUBY -->
+            <ruby class="ruby-over">
+              <rb class="ruby-guide">ruby-rb-02</rb><!-- RUBY OVER --><rp>(</rp><rt>rrb-02 <ruby><rb class="ruby-guide">annotation</rb><rp>(</rp><rt>anno-anno</rt><rp>)</rp></ruby></rt><rp>)</rp>
+            </ruby><!-- RUBY UNDER --><rp>(</rp><rt>rrb-02 <ruby><rb class="ruby-guide">annotation</rb><rp>(</rp><rt>anno-anno</rt><rp>)</rp></ruby></rt><rp>)</rp>
+          </ruby>
+        </p>
+        <p><b>TEMPORARY FALLBACK ONLY</b>.</p>
+        <p>For Webkit (Safari) and Blink/Chromium-based browsers (Google Chrome, Microsoft Edge, Vivaldi, Brave, etc.)</p>
+      </div>
+      <div>
+        <h4>Interleaved<br/><code>span</code> instead of <code>rb</code></h4>
+        <p style="border: 1px solid; width: max-content;">
+          <ruby class="ruby-under" translate="no">
+            <!-- 1ST RUBY -->
+            <ruby class="ruby-over">
+              <span class="ruby-base ruby-guide">ruby-rb-01</span><!-- RUBY OVER --><rp>(</rp><rt><ruby><span class="ruby-base ruby-guide">rrb-01</span><rp>(</rp><rt>rrb-01-A</rt><rp>)</rp></ruby> annotation</rt><rp>)</rp>
+            </ruby><!-- RUBY UNDER --><rp>(</rp><rt><ruby><span class="ruby-base ruby-guide">rrb-01</span><rp>(</rp><rt>rrb-01-A</rt><rp>)</rp></ruby> annotation</rt><rp>)</rp>
+
+            <!-- 2ND RUBY -->
+            <ruby class="ruby-over">
+              <span class="ruby-base ruby-guide">ruby-rb-02</span><!-- RUBY OVER --><rp>(</rp><rt>rrb-02 <ruby><span class="ruby-base ruby-guide">annotation</span><rp>(</rp><rt>anno-anno</rt><rp>)</rp></ruby></rt><rp>)</rp>
+            </ruby><!-- RUBY UNDER --><rp>(</rp><rt>rrb-02 <ruby><span class="ruby-base ruby-guide">annotation</span><rp>(</rp><rt>anno-anno</rt><rp>)</rp></ruby></rt><rp>)</rp>
+          </ruby>
+        </p>
+        <p><b>NOT RECOMMENDED!</b></p>
+        <p><code>rb</code> is a semantic element, <b>use</b> it!</p>
+      </div>
+    </section>
+
+
+    <h2>Tabular model</h2>
+    <h3>Examples</h3>
+    <p>
+      これは<ruby lang="ja" translate="no"><rb lang="ja-Hani">日</rb><rb lang="ja-Hani">本</rb><rb lang="ja-Hani">語</rb><rtc lang="ja-Hira"><rp>(</rp><rt>に</rt><rt>ほん</rt><rt>ご</rt><rp>)</rp></rtc><rtc lang="ja-Latn"><rp>(</rp><rt>Ni</rt><rt>hon</rt><rt>go</rt><rp>)</rp></rtc></ruby>です。
+    </p>
+
+    <p>
+      <ruby lang="ja" translate="no">
+        <rb lang="ja-Hani">東</rb><rb lang="ja-Hani">京</rb><rtc lang="ja-Hira"><rp>(</rp><rt>とう</rt><rt>きょう</rt><rp>)</rp></rtc><rtc lang="ja-Latn"><rp>(</rp><rt>Tō</rt><rt>kyō</rt><rp>)</rp></rtc>
+      </ruby>
+      <ruby lang="ja" translate="no">
+        <rb lang="ja-Hani">東</rb><rb lang="ja-Hani">京</rb><rtc lang="ja-Kana"><rp>(</rp><rt>トー</rt><rt>キョー</rt><rp>)</rp></rtc><rtc lang="ja-Latn"><rp>(</rp><rt>Tō</rt><rt>kyō</rt><rp>)</rp></rtc>
+      </ruby>
+    </p>
+
+    <p>
+      <ruby lang="ko" translate="no">
+        <rb lang="ko-Hani">韓</rb><rb lang="ko-Hani">國</rb><rtc lang="ko-Hang"><rp>(</rp><rt>한</rt><rt>국</rt><rp>)</rp></rtc><rtc lang="ko-Latn"><rp>(</rp><rt>Han</rt><rt>guk</rt><rp>)</rp></rtc>
+      </ruby>
+    </p>
+
+    <p>
+      <ruby lang="zh" translate="no">
+        <rb lang="zh-Hant">北</rb><rb lang="zh-Hant">京</rb><rtc lang="zh-Bopo"><rp>(</rp><rt>ㄅㄟˇ</rt><rt>ㄐㄧㄥ</rt><rp>)</rp></rtc><rtc lang="zh-Latn"><rp>(</rp><rt>Běi</rt><rt>jīng</rt><rp>)</rp></rtc>
+      </ruby>
+    </p>
+
+    <p>
+      Sa <ruby lang="fil" translate="no"><rb lang="fil-Tglg">ᜇ᜔ᜌ</rb><rb lang="fil-Tglg">ᜎᜒ</rb><rb lang="fil-Tglg">ᜊᜒ</rb><rtc><rp>(</rp><rt>Dya</rt><rt>li</rt><rt>bi</rt><rp>)</rp></rtc><rtc lang="en-PH"><rp>(</rp><rt>Jo</rt><rt>lli</rt><rt>bee</rt><rp>)</rp></rtc></ruby>, bida ang saya!
+    </p>
+
+    <h4>Baybayin: By character</h4>
+    <p>By character markup is useful for learning the characters in Baybayin.</p>
+    <h5>Markup method #1: Separate <code>ruby</code> block per word</h5>
+    <p>This markup style keeps the ruby-under text on a per-character basis.</p>
+    <p>
+      <ruby lang="fil" translate="no">
+        <rb lang="fil-Tglg">ᜀ</rb><rb lang="fil-Tglg">ᜃᜓ</rb>
+        <rtc>
+          <rp>(</rp><rt><ruby><rb>A</rb><rt>[ɐ]</rt></ruby></rt><rt>ko</rt><rp>)</rp>
+        </rtc>
+        <rtc>
+          <rp>(</rp><rt lang="en-PH">I</rt><rp>)</rp>
+        </rtc>
+      </ruby>
+      <ruby lang="fil" translate="no">
+        <rb lang="fil-Tglg">ᜀ</rb><rb lang="fil-Tglg">ᜌ᜔</rb>
+        <rtc>
+          <rp>(</rp><rt><ruby><rb>a</rb><rt>[ɐ]</rt></ruby></rt><rt>y</rt><rp>)</rp>
+        </rtc>
+        <rtc>
+          <rp>(</rp><rt lang="en-PH">am</rt><rp>)</rp>
+        </rtc>
+      </ruby>
+    </p>
+    <h5>Markup method #2: Unified ruby-under</h5>
+    <p>This markup style allows for a unified ruby-under annotation.</p>
+    <p>
+      <ruby class="ruby-under" lang="fil" translate="no">
+        <ruby class="ruby-over">
+          <rb lang="fil-Tglg">ᜁ</rb><rb lang="fil-Tglg">ᜐ</rb><rb lang="fil-Tglg">ᜅ᜔</rb> <rb lang="fil-Tglg">ᜉ</rb><rb lang="fil-Tglg">ᜋ᜔</rb><rb lang="fil-Tglg">ᜉ</rb><rb lang="fil-Tglg">ᜅ᜕</rb>
+          <rtc>
+            <rp>(</rp>
+            <rt><ruby><rb>i</rb><rt>[ɪ]</rt></ruby></rt><rt>sa</rt><rt>n͠g</rt>
+            <rt>pa</rt><rt>m</rt><rt>pa</rt><rt>n͠g</rt>
+            <rp>)</rp>
+          </rtc>
+        </ruby><rp>(</rp><rt lang="en-PH">a shore</rt><rp>)</rp>
+      </ruby>
+    </p>
+    <p>If we use this method in our “I am” example (see: Markup method #1), we can make it better.</p>
+    <p>
+      <ruby class="ruby-under" lang="fil" translat="no">
+        <ruby class="ruby-over">
+          <rb lang="fil-Tglg">ᜀ</rb><rb lang="fil-Tglg">ᜃᜓ</rb>
+          <rtc>
+            <rp>(</rp><rt><ruby><rb>A</rb><rt>[ɐ]</rt></ruby></rt><rt>ko</rt><rp>)</rp>
+          </rtc>
+        </ruby><rp>(</rp><rt>I</rt><rp>)</rp>
+        <ruby class="ruby-over" lang="fil" translate="no">
+          <rb lang="fil-Tglg">ᜀ</rb><rb lang="fil-Tglg">ᜌ᜔</rb>
+          <rtc>
+            <rp>(</rp><rt><ruby><rb>a</rb><rt>[ɐ]</rt></ruby></rt><rt>y</rt><rp>)</rp>
+          </rtc>
+        </ruby><rp>(</rp><rt>am</rt><rp>)</rp>
+      </ruby>
+    </p>
+
+    <h4>By syllable</h4>
+    <p>By syllable markup is when a student has mastered each Baybayin character. This makes it easier to read as the annotations are syllabical.</p>
+    <p>
+      <ruby class="ruby-under" translate="no">
+        <ruby class="ruby-over" lang="fil-Tglg">
+          <rb>ᜀ</rb><rb>ᜃᜓ</rb>
+          <rb>ᜀᜌ᜔</rb>
+          <rb>ᜈ</rb><rb>ᜋ</rb><rb>ᜋ</rb><rb>ᜎ</rb><rb>ᜄᜒ</rb>
+          <rb>ᜋ</rb><rb>ᜎ</rb><rb>ᜉᜒᜆ᜔</rb>
+          <rb>ᜐ</rb>
+          <rb>ᜁ</rb><rb>ᜐᜅ᜔</rb>
+          <rb>ᜉᜋ᜔</rb><rb>ᜉᜅ᜕</rb>
+          <rp>(</rp><rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby></rt><rt lang="fil">ko</rt>
+          <rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby>y</rt>
+          <rt lang="fil">na</rt><rt lang="fil">ma</rt><rt lang="fil">ma</rt><rt lang="fil">la</rt><rt lang="fil">gi</rt>
+          <rt lang="fil">ma</rt><rt lang="fil">lá</rt><rt lang="fil">pit</rt>
+          <rt lang="fil">sa</rt>
+          <rt lang="fil"><ruby><rb>i</rb><rp>(</rp><rt>[ɪ]</rt><rp>)</rp></ruby></rt><rt lang="fil">san͠g</rt>
+          <rt lang="fil">pam</rt><rt lang="fil">pan͠g.</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt>I am residing near a shore.</rt><rp>)</rp>
+      </ruby>
+    </p>
+
+    <p>
+      <ruby class="ruby-under" translate="no">
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜀ</rb><rb>ᜃᜓ</rb>
+          <rb>ᜀᜌ᜔</rb>
+          <rp>(</rp><rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby></rt><rt lang="fil">ko</rt>
+          <rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby>y</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt>I am</rt><rp>)</rp>
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜈ</rb><rb>ᜋ</rb><rb>ᜋ</rb><rb>ᜎ</rb><rb>ᜄᜒ</rb>
+          <rp>(</rp><rt lang="fil">na</rt><rt lang="fil">ma</rt><rt lang="fil">ma</rt><rt lang="fil">la</rt><rt lang="fil">gi</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt>residing</rt><rp>)</rp>
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜋ</rb><rb>ᜎ</rb><rb>ᜉᜒᜆ᜔</rb>
+          <rp>(</rp><rt lang="fil">ma</rt><rt lang="fil">lá</rt><rt lang="fil">pit</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt>near</rt><rp>)</rp>
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜐ</rb>
+          <rb>ᜁ</rb><rb>ᜐᜅ᜔</rb>
+          <rp>(</rp><rt lang="fil">sa</rt>
+          <rt lang="fil"><ruby><rb>i</rb><rp>(</rp><rt>[ɪ]</rt><rp>)</rp></ruby></rt><rt lang="fil">san͠g</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt>a</rt><rp>)</rp>
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜉᜋ᜔</rb><rb>ᜉᜅ᜕</rb>
+          <rp>(</rp><rt lang="fil">pam</rt><rt lang="fil">pan͠g.</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt>shore.</rt><rp>)</rp>
+      </ruby>
+    </p>
+
+    <h4>By word</h4>
+    <p>
+      <ruby class="ruby-under" translate="no">
+        <ruby class="ruby-over" lang="fil-Tglg">
+          <rb>ᜀᜃᜓ</rb>
+          <rb>ᜀᜌ᜔</rb>
+          <rb>ᜈᜋᜋᜎᜄᜒ</rb>
+          <rb>ᜋᜎᜉᜒᜆ᜔</rb>
+          <rb>ᜐ</rb>
+          <rb>ᜁᜐᜅ᜔</rb>
+          <rb>ᜉᜋ᜔ᜉᜅ᜕</rb>
+          <rp>(</rp><rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby>ko</rt>
+          <rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby>y</rt>
+          <rt lang="fil">namamalagi</rt>
+          <rt lang="fil">malápit</rt>
+          <rt lang="fil">sa</rt>
+          <rt lang="fil"><ruby><rb>i</rb><rp>(</rp><rt>[ɪ]</rt><rp>)</rp></ruby>san͠g</rt>
+          <rt lang="fil">pampan͠g.</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt>I am residing near a shore.</rt><rp>)</rp>
+      </ruby>
+    </p>
+
+    <p>
+      <ruby class="ruby-under" translate="no">
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜀᜃᜓ</rb>
+          <rb>ᜀᜌ᜔</rb>
+          <rp>(</rp><rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby>ko</rt>
+          <rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby>y</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt>I am</rt><rp>)</rp>
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜈᜋᜋᜎᜄᜒ</rb>
+          <rp>(</rp><rt lang="fil">namamalagi</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt>residing</rt><rp>)</rp>
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜋᜎᜉᜒᜆ᜔</rb>
+          <rp>(</rp><rt lang="fil">malápit</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt>near</rt><rp>)</rp>
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜐ</rb>
+          <rb>ᜁᜐᜅ᜔</rb>
+          <rp>(</rp><rt lang="fil">sa</rt>
+          <rt lang="fil"><ruby><rb>i</rb><rp>(</rp><rt>[ɪ]</rt><rp>)</rp></ruby>san͠g</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt>a</rt><rp>)</rp>
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜉᜋ᜔ᜉᜅ᜕</rb>
+          <rp>(</rp><rt lang="fil">pampan͠g.</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt>shore.</rt><rp>)</rp>
+      </ruby>
+    </p>
+
+    <h2>Interleaved model with <code>rb</code></h2>
+    <h3>Examples</h3>
+
+    <p>
+      これは<ruby class="ruby-under" lang="ja" translate="no"><ruby class="ruby-over"><rb lang="ja-Hani">日</rb><rp>(</rp><rt lang="ja-Hira">に</rt><rp>)</rp><rb lang="ja-Hani">本</rb><rp>(</rp><rt lang="ja-Hira">ほん</rt><rp>)</rp><rb lang="ja-Hani">語</rb><rp>(</rp><rt lang="ja-Hira">ご</rt><rp>)</rp></ruby><rp>(</rp><rt lang="ja-Latn">Ni·hon·go</rt><rp>)</rp></ruby>です。
+    </p>
+
+    <p>
+      <ruby class="ruby-under" lang="ja" translate="no">
+        <ruby class="ruby-over"><rb lang="ja-Hani">東</rb><rp>(</rp><rt lang="ja-Hira">とう</rt><rp>)</rp><rb lang="ja-Hani">京</rb><rp>(</rp><rt lang="ja-Hira">きょう</rt><rp>)</rp></ruby><rp>(</rp><rt lang="ja-Latn">Tō·kyō</rt><rp>)</rp>
+      </ruby>
+      <ruby class="ruby-under" lang="ja" translate="no">
+        <ruby class="ruby-over"><rb lang="ja-Hani">東</rb><rp>(</rp><rt lang="ja-Kana">トー</rt><rp>)</rp></ruby><rp>(</rp><rt lang="ja-Latn">Tō</rt><rp>)</rp><ruby class="ruby-over"><rb lang="ja-Hani">京</rb><rp>(</rp><rt lang="ja-Kana">キョー</rt><rp>)</rp></ruby><rp>(</rp><rt lang="ja-Latn">kyō</rt><rp>)</rp>
+      </ruby>
+    </p>
+
+    <p>
+      <ruby class="ruby-under" lang="zh" translate="no">
+        <ruby class="ruby-over"><rb lang="zh-Hant">北</rb><rp>(</rp><rt lang="zh-Bopo">ㄅㄟˇ</rt><rp>)</rp></ruby><rp>(</rp><rt lang="zh-Latn">Běi</rt><rp>)</rp><ruby class="ruby-over"><rb lang="zh-Hant">京</rb><rp>(</rp><rt lang="zh-Bopo">ㄐㄧㄥ</rt><rp>)</rp></ruby><rp>(</rp><rt lang="zh-Latn">jīng</rt><rp>)</rp>
+      </ruby>
+    </p>
+
+    <p>
+      <ruby class="ruby-under" lang="ko" translate="no">
+        <ruby class="ruby-over"><rb lang="ko-Hani">韓</rb><rp>(</rp><rt lang="ko-Hang">한</rt><rp>)</rp></ruby><rp>(</rp><rt lang="ko-Latn">Han</rt><rp>)</rp><ruby class="ruby-over"><rb lang="ko-Hani">國</rb><rp>(</rp><rt lang="ko-Hang">국</rt><rp>)</rp></ruby><rp>(</rp><rt lang="ko-Latn">guk</rt><rp>)</rp>
+      </ruby>
+    </p>
+
+    <p>
+      Nothing can beat <ruby class="ruby-under" lang="fil" translate="no"><ruby class="ruby-over"><rb lang="fil-Tglg">ᜇ᜔ᜌ</rb><rp>(</rp><rt>Dya</rt><rp>)</rp></ruby><ruby class="ruby-over"><rb lang="fil-Tglg">ᜎᜒ</rb><rp>(</rp><rt>li</rt><rp>)</rp></ruby><ruby class="ruby-over"><rb lang="fil-Tglg">ᜊᜒ</rb><rp>(</rp><rt>bi</rt><rp>)</rp></ruby><rp>(</rp><rt lang="en-PH">Jollibee</rt><rp>)</rp></ruby>, not even McDonald's.
+    </p>
+
+    <p>
+      Be sure to read <a href="#"><ruby class="ruby-under" lang="fil" translate="no"><ruby class="ruby-over"><rb lang="fil-Tglg">ᜋ</rb><rp>(</rp><rt>Ma</rt><rp>)</rp></ruby><ruby class="ruby-over"><rb lang="fil-Tglg">ᜈᜒ</rb><rp>(</rp><rt>ni</rt><rp>)</rp></ruby><ruby class="ruby-over"><rb lang="fil-Tglg">ᜎ</rb><rp>(</rp><rt>la</rt><rp>)</rp></ruby></ruby> Bulletin</a>.
+      <br/>
+      Be sure to read <a href="#"><ruby class="ruby-under" lang="fil" translate="no"><ruby class="ruby-over"><rb lang="fil-Tglg">ᜋ</rb><rb lang="fil-Tglg">ᜈᜒ</rb><rb lang="fil-Tglg">ᜎ</rb></ruby><rp>(</rp><rt lang="fil">Manila</rt><rp>)</rp></ruby> Bulletin</a>.
+    </p>
+
+    <h4>By letter</h4>
+    <p>
+      <ruby class="ruby-under" lang="fil-Tglg" translate="no">
+        <ruby class="ruby-over">
+          <rb>ᜀ</rb><rp>(</rp><rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby></rt><rp>)</rp><rb>ᜃᜓ</rb><rp>(</rp><rt lang="fil">ko</rt><rp>)</rp>
+          <rb>ᜀ</rb><rp>(</rp><rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby><rp>)</rp><rb>ᜌ᜔</rb><rp>(</rp><rt lang="fil">y</rt><rp>)</rp>
+          <rb>ᜈ</rb><rp>(</rp><rt lang="fil">na</rt><rp>)</rp><rb>ᜋ</rb><rp>(</rp><rt lang="fil">ma</rt><rp>)</rp><rb>ᜋ</rb><rp>(</rp><rt lang="fil">ma</rt><rp>)</rp><rb>ᜎ</rb><rp>(</rp><rt lang="fil">la</rt><rp>)</rp><rb>ᜄᜒ</rb><rp>(</rp><rt lang="fil">gi</rt><rp>)</rp>
+          <rb>ᜋ</rb><rp>(</rp><rt lang="fil">ma</rt><rp>)</rp><rb>ᜎ</rb><rp>(</rp><rt lang="fil">lá</rt><rp>)</rp><rb>ᜉᜒ</rb><rp>(</rp><rt lang="fil">pi</rt><rp>)</rp><rb>ᜆ᜔</rb><rp>(</rp><rt lang="fil">t</rt><rp>)</rp>
+          <rb>ᜐ</rb><rp>(</rp><rt lang="fil">sa</rt><rp>)</rp>
+          <rb>ᜁ</rb><rp>(</rp><rt lang="fil"><ruby><rb>i</rb><rp>(</rp><rt>[ɪ]</rt><rp>)</rp></ruby></rt><rp>)</rp><rb>ᜐ</rb><rp>(</rp><rt lang="fil">sa</rt><rp>)</rp><rb>ᜅ᜔</rb><rp>(</rp><rt lang="fil">n͠g</rt><rp>)</rp>
+          <rb>ᜉ</rb><rp>(</rp><rt lang="fil">pa</rt><rp>)</rp><rb>ᜋ᜔</rb><rp>(</rp><rt lang="fil">m</rt><rp>)</rp><rb>ᜉ</rb><rp>(</rp><rt lang="fil">pa</rt><rp>)</rp><rb>ᜅ᜕</rb><rp>(</rp><rt lang="fil">n͠g.</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">I am residing near a shore.</rt><rp>)</rp>
+      </ruby>
+    </p>
+
+    <p>
+      <ruby class="ruby-under" lang="fil-Tglg" translate="no">
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜀ</rb><rp>(</rp><rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby></rt><rp>)</rp><rb>ᜃᜓ</rb><rp>(</rp><rt lang="fil">ko</rt><rp>)</rp>
+          <rb>ᜀ</rb><rp>(</rp><rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby></rt><rp>)</rp><rb>ᜌ᜔</rb><rp>(</rp><rt lang="fil">y</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">I am</rt><rp>)</rp>
+      </ruby>
+      <ruby class="ruby-under" translate="no">
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜈ</rb><rp>(</rp><rt lang="fil">na</rt><rp>)</rp><rb>ᜋ</rb><rp>(</rp><rt lang="fil">ma</rt><rp>)</rp><rb>ᜋ</rb><rp>(</rp><rt lang="fil">ma</rt><rp>)</rp><rb>ᜎ</rb><rp>(</rp><rt lang="fil">la</rt><rp>)</rp><rb>ᜄᜒ</rb><rp>(</rp><rt lang="fil">gi</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">residing</rt><rp>)</rp>
+      </ruby>
+      <ruby class="ruby-under" translate="no">
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜋ</rb><rp>(</rp><rt lang="fil">ma</rt><rp>)</rp><rb>ᜎ</rb><rp>(</rp><rt lang="fil">lá</rt><rp>)</rp><rb>ᜉᜒ</rb><rp>(</rp><rt lang="fil">pi</rt><rp>)</rp><rb>ᜆ᜔</rb><rp>(</rp><rt lang="fil">t</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">near</rt><rp>)</rp>
+      </ruby>
+      <ruby class="ruby-under" translate="no">
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜐ</rb><rp>(</rp><rt lang="fil">sa</rt><rp>)</rp>
+          <rb>ᜁ</rb><rp>(</rp><rt lang="fil"><ruby><rb>i</rb><rp>(</rp><rt>[ɪ]</rt><rp>)</rp></ruby></rt><rp>)</rp><rb>ᜐ</rb><rp>(</rp><rt lang="fil">sa</rt><rp>)</rp><rb>ᜅ᜔</rb><rp>(</rp><rt lang="fil">n͠g</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">a</rt><rp>)</rp>
+      </ruby>
+      <ruby class="ruby-under" translate="no">
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜉ</rb><rp>(</rp><rt lang="fil">pa</rt><rp>)</rp><rb>ᜋ᜔</rb><rp>(</rp><rt lang="fil">m</rt><rp>)</rp><rb>ᜉ</rb><rp>(</rp><rt lang="fil">pa</rt><rp>)</rp><rb>ᜅ᜕</rb><rp>(</rp><rt lang="fil">n͠g.</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">shore.</rt><rp>)</rp>
+      </ruby>
+    </p>
+
+    <h4>By syllable</h4>
+    <p>
+      <ruby class="ruby-under" lang="fil-Tglg" translate="no">
+        <ruby class="ruby-over">
+          <rb>ᜀ</rb><rp>(</rp><rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby></rt><rp>)</rp><rb>ᜃᜓ</rb><rp>(</rp><rt lang="fil">ko</rt><rp>)</rp>
+          <rb>ᜀᜌ᜔</rb><rp>(</rp><rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby>y</rt><rp>)</rp>
+          <rb>ᜈ</rb><rp>(</rp><rt lang="fil">na</rt><rp>)</rp><rb>ᜋ</rb><rp>(</rp><rt lang="fil">ma</rt><rp>)</rp><rb>ᜋ</rb><rp>(</rp><rt lang="fil">ma</rt><rp>)</rp><rb>ᜎ</rb><rp>(</rp><rt lang="fil">la</rt><rp>)</rp><rb>ᜄᜒ</rb><rp>(</rp><rt lang="fil">gi</rt><rp>)</rp>
+          <rb>ᜋ</rb><rp>(</rp><rt lang="fil">ma</rt><rp>)</rp><rb>ᜎ</rb><rp>(</rp><rt lang="fil">lá</rt><rp>)</rp><rb>ᜉᜒᜆ᜔</rb><rp>(</rp><rt lang="fil">pit</rt><rp>)</rp>
+          <rb>ᜐ</rb><rp>(</rp><rt lang="fil">sa</rt><rp>)</rp>
+          <rb>ᜁ</rb><rp>(</rp><rt lang="fil"><ruby><rb>i</rb><rp>(</rp><rt>[ɪ]</rt><rp>)</rp></ruby></rt><rp>)</rp><rb>ᜐᜅ᜔</rb><rp>(</rp><rt lang="fil">san͠g</rt><rp>)</rp>
+          <rb>ᜉᜋ᜔</rb><rp>(</rp><rt lang="fil">pam</rt><rp>)</rp><rb>ᜉᜅ᜕</rb><rp>(</rp><rt lang="fil">pan͠g.</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">I am residing near a shore.</rt><rp>)</rp>
+      </ruby>
+    </p>
+
+    <p>
+      <ruby class="ruby-under" lang="fil-Tglg" translate="no">
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜀ</rb><rp>(</rp><rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby></rt><rp>)</rp><rb>ᜃᜓ</rb><rp>(</rp><rt lang="fil">ko</rt><rp>)</rp>
+          <rb>ᜀᜌ᜔</rb><rp>(</rp><rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby>y</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">I am</rt><rp>)</rp>
+      </ruby>
+      <ruby class="ruby-under" translate="no">
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜈ</rb><rp>(</rp><rt lang="fil">na</rt><rp>)</rp><rb>ᜋ</rb><rp>(</rp><rt lang="fil">ma</rt><rp>)</rp><rb>ᜋ</rb><rp>(</rp><rt lang="fil">ma</rt><rp>)</rp><rb>ᜎ</rb><rp>(</rp><rt lang="fil">la</rt><rp>)</rp><rb>ᜄᜒ</rb><rp>(</rp><rt lang="fil">gi</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">residing</rt><rp>)</rp>
+      </ruby>
+      <ruby class="ruby-under" translate="no">
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜋ</rb><rp>(</rp><rt lang="fil">ma</rt><rp>)</rp><rb>ᜎ</rb><rp>(</rp><rt lang="fil">lá</rt><rp>)</rp><rb>ᜉᜒᜆ᜔</rb><rp>(</rp><rt lang="fil">pit</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">near</rt><rp>)</rp>
+      </ruby>
+      <ruby class="ruby-under" translate="no">
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜐ</rb><rp>(</rp><rt lang="fil">sa</rt><rp>)</rp>
+          <rb>ᜁ</rb><rp>(</rp><rt lang="fil"><ruby><rb>i</rb><rp>(</rp><rt>[ɪ]</rt><rp>)</rp></ruby></rt><rp>)</rp><rb>ᜐᜅ᜔</rb><rp>(</rp><rt lang="fil">san͠g</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">a</rt><rp>)</rp>
+      </ruby>
+      <ruby class="ruby-under" translate="no">
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜉᜋ᜔</rb><rp>(</rp><rt lang="fil">pam</rt><rp>)</rp><rb>ᜉᜅ᜕</rb><rp>(</rp><rt lang="fil">pan͠g.</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">shore.</rt><rp>)</rp>
+      </ruby>
+    </p>
+
+    <h4>By word</h4>
+    <p>
+      <ruby class="ruby-under" lang="fil-Tglg" translate="no">
+        <ruby class="ruby-over">
+          <rb>ᜀᜃᜓ</rb><rp>(</rp><rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby>ko</rt><rp>)</rp>
+          <rb>ᜀᜌ᜔</rb><rp>(</rp><rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby>y</rt><rp>)</rp>
+          <rb>ᜈᜋᜋᜎᜄᜒ</rb><rp>(</rp><rt lang="fil">namamalagi</rt><rp>)</rp>
+          <rb>ᜋᜎᜉᜒᜆ᜔</rb><rp>(</rp><rt lang="fil">malápit</rt><rp>)</rp>
+          <rb>ᜐ</rb><rp>(</rp><rt lang="fil">sa</rt><rp>)</rp>
+          <rb>ᜁᜐᜅ᜔</rb><rp>(</rp><rt lang="fil"><ruby><rb>i</rb><rp>(</rp><rt>[ɪ]</rt><rp>)</rp></ruby>san͠g</rt><rp>)</rp>
+          <rb>ᜉᜋ᜔ᜉᜅ᜕</rb><rp>(</rp><rt lang="fil">pampan͠g.</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">I am residing near a shore.</rt><rp>)</rp>
+      </ruby>
+    </p>
+
+    <p>
+      <ruby class="ruby-under" lang="fil-Tglg" translate="no">
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜀᜃᜓ</rb><rp>(</rp><rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby>ko</rt><rp>)</rp>
+          <rb>ᜀᜌ᜔</rb><rp>(</rp><rt lang="fil"><ruby><rb>a</rb><rp>(</rp><rt>[ɐ]</rt><rp>)</rp></ruby>y</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">I am</rt><rp>)</rp>
+      </ruby>
+      <ruby class="ruby-under" lang="fil-Tglg" translate="no">
+        <ruby class="ruby-over">
+          <rb class="ruby-guide">ᜈᜋᜋᜎᜄᜒ</rb><rp>(</rp><rt lang="fil">namamalagi</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">residing</rt><rp>)</rp>
+      </ruby>
+      <ruby class="ruby-under" lang="fil-Tglg" translate="no">
+        <ruby class="ruby-over">
+          <rb class="ruby-guide">ᜋᜎᜉᜒᜆ᜔</rb><rp>(</rp><rt lang="fil">malápit</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">near</rt><rp>)</rp>
+      </ruby>
+      <ruby class="ruby-under" lang="fil-Tglg" translate="no">
+        <ruby class="ruby-over ruby-guide">
+          <rb>ᜐ</rb><rp>(</rp><rt lang="fil">sa</rt><rp>)</rp>
+          <rb>ᜁᜐᜅ᜔</rb><rp>(</rp><rt lang="fil"><ruby><rb>i</rb><rp>(</rp><rt>[ɪ]</rt><rp>)</rp></ruby>san͠g</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">a</rt><rp>)</rp>
+      </ruby>
+      <ruby class="ruby-under" lang="fil-Tglg" translate="no">
+        <ruby class="ruby-over">
+          <rb class="ruby-guide">ᜉᜋ᜔ᜉᜅ᜕</rb><rp>(</rp><rt lang="fil">pampan͠g.</rt><rp>)</rp>
+        </ruby><rp>(</rp><rt lang="en-PH">shore.</rt><rp>)</rp>
+      </ruby>
+    </p>
+
+  </body>
+</html>
